@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────
+#  Eagle Industry Training Platform — Backend
+#  Python / Django requirements
+# ─────────────────────────────────────────────
+
+# Core framework
+Django==5.2.14
+
+# REST API
+djangorestframework==3.17.1
+
+# JWT authentication
+djangorestframework-simplejwt==5.5.1
+
+# CORS headers (allow React dev server → Django)
+django-cors-headers==4.9.0
+
+# Query filtering support
+django-filter==25.2
+
+# QR code generation (session enrollment QR codes)
+qrcode==8.2
+Pillow==12.1.1
+
+# Certificate PDF generation
+reportlab==4.4.10

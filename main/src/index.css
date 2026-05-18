@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 211 100% 35%; /* #0056B2 */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 20% 96%; /* #F1F5F9 */
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --warning: 45 100% 55%;
+    --warning-foreground: 222 47% 11%;
+
+    --neon-green: 145 80% 50%;
+    --neon-green-glow: 145 80% 50%;
+    --neon-red: 0 72% 55%;
+    --neon-yellow: 45 100% 55%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 211 100% 35%; /* #0056B2 */
+
+    --radius: 0.75rem;
+
+    --glass-bg: 0 0% 100%;
+    --glass-border: 214.3 31.8% 91.4%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 211 100% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 96%; /* #F1F5F9 */
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 211 100% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer components {
+  .scrollable-chart {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .error-boundary-overlay {
+    color: #b91c1c;
+    padding: 20px;
+    background: #ffffff;
+    z-index: 9999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-2xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-input {
+    @apply bg-muted/50 backdrop-blur-sm border border-border/50 rounded-xl text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all duration-300;
+  }
+
+  .neon-glow-green {
+    box-shadow: 0 0 20px hsl(145 80% 50% / 0.3), 0 0 60px hsl(145 80% 50% / 0.1);
+  }
+
+  .neon-glow-red {
+    box-shadow: 0 0 20px hsl(0 72% 55% / 0.3), 0 0 60px hsl(0 72% 55% / 0.1);
+  }
+
+  .neon-glow-yellow {
+    box-shadow: 0 0 20px hsl(45 100% 55% / 0.3), 0 0 60px hsl(45 100% 55% / 0.1);
+  }
+
+  .gradient-bg {
+    background: linear-gradient(180deg, hsl(220 30% 12%) 0%, hsl(220 25% 4%) 100%);
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold rounded-xl px-6 py-3 transition-all duration-300;
+    box-shadow: 0 0 20px hsl(145 80% 50% / 0.2);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 30px hsl(145 80% 50% / 0.4);
+    transform: scale(1.02);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-destructive {
+    @apply bg-destructive text-destructive-foreground font-semibold rounded-xl px-6 py-3 transition-all duration-300;
+    box-shadow: 0 0 20px hsl(0 72% 55% / 0.2);
+  }
+
+  .bottom-nav {
+    @apply glass-card fixed bottom-0 left-0 right-0 flex justify-around items-center px-4 py-2 z-50;
+    border-radius: 20px 20px 0 0;
+  }
+}
+
+@layer utilities {
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 10px hsl(145 80% 50% / 0.3); }
+    50% { box-shadow: 0 0 25px hsl(145 80% 50% / 0.6); }
+  }
+
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 10px hsl(0 72% 55% / 0.3); }
+    50% { box-shadow: 0 0 25px hsl(0 72% 55% / 0.6); }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+  }
+
+  .animate-pulse-green {
+    animation: pulse-green 2s ease-in-out infinite;
+  }
+
+  .animate-pulse-red {
+    animation: pulse-red 1s ease-in-out infinite;
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+}
