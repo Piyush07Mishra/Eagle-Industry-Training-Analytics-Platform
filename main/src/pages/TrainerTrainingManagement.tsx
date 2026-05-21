@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { apiFetch, apiGet } from "@/api/axios";
 import { toast } from "sonner";
 
-const API = "http://localhost:8000";
-
 const TrainerTrainingManagement: React.FC = () => {
   const { user } = useAuth();
 
@@ -100,9 +98,10 @@ const TrainerTrainingManagement: React.FC = () => {
     setModalType("qr");
     setIsModalOpen(true);
     // Use the base64 data directly from the session object
+    const frontendBase = window.location.origin;
     setQrData({
       qr_token: session.qr_token,
-      enrollment_link: session.enrollment_link || `http://localhost:5173/enroll/${session.qr_token}/`,
+      enrollment_link: session.enrollment_link || `${frontendBase}/enroll/${session.qr_token}/`,
       qr_image_base64: session.qr_image_base64 || "",
       session_type: session.session_type,
       meeting_link: session.meeting_link,
