@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
+import { API_BASE_URL } from "@/api/axios";
 
 export type UserRole = "ADMIN" | "TRAINER" | "TRAINEE" | "CLIENT";
 
@@ -23,7 +24,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
-const API = "http://localhost:8000";
+const API = API_BASE_URL;
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
