@@ -14,17 +14,27 @@ export default function TraineeAvailableSessions() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEnrolling, setIsEnrolling] = useState<string | null>(null);
 
-  const fetchAvailableSessions = () => {
+  const fetchAvailableSessions = (showLoading = true) => {
     if (!user?.id) return;
-    setIsLoading(true);
+    if (showLoading) setIsLoading(true);
     apiGet<any[]>(`/api/trainee/${user.id}/available-sessions/`)
       .then(data => setSessions(Array.isArray(data) ? data : []))
       .catch(() => toast.error("Failed to fetch available sessions"))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        if (showLoading) setIsLoading(false);
+      });
   };
 
   useEffect(() => {
-    fetchAvailableSessions();
+    fetchAvailableSessions(true);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const intervalId = setInterval(() => {
+      fetchAvailableSessions(false);
+    }, 20000);
+    return () => clearInterval(intervalId);
   }, [user?.id]);
 
   const handleEnroll = (sessionId: string) => {

@@ -45,9 +45,9 @@ const TrainerTrainingManagement: React.FC = () => {
     is_completed: false,
   });
 
-  const fetchData = async () => {
+  const fetchData = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
       const [usersRes, sessionsRes, coursesRes] = await Promise.all([
         apiFetch("/api/users/?role=TRAINEE"),
         apiFetch("/api/trainer/sessions/full/"),
@@ -62,11 +62,17 @@ const TrainerTrainingManagement: React.FC = () => {
     } catch (err) {
       console.error("Failed to load data", err);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    fetchData(true);
+    const intervalId = setInterval(() => {
+      fetchData(false);
+    }, 30000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleSaveSession = async (e: React.FormEvent) => {
     e.preventDefault();

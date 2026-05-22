@@ -473,11 +473,17 @@ def enroll_by_qr_token(request, qr_token):
 
     # Already enrolled
     if session.trainees.filter(id=user.id).exists():
+        enrolled_count = session.trainees.count()
+        seats_remaining = session.max_trainees - enrolled_count
         return Response({
             'already_enrolled': True,
             'message': f'Already enrolled in {session.course.title}.',
             'session_id': session.id,
             'course_title': session.course.title,
+            'enrolled_count': enrolled_count,
+            'max_trainees': session.max_trainees,
+            'seats_remaining': seats_remaining,
+            'is_full': seats_remaining <= 0,
         }, status=200)
 
     # Capacity check
@@ -521,6 +527,8 @@ def enroll_by_qr_token(request, qr_token):
     except Exception:
         pass
 
+    enrolled_count = session.trainees.count()
+    seats_remaining = session.max_trainees - enrolled_count
     return Response({
         'success': True,
         'message': f'Successfully enrolled in {session.course.title}!',
@@ -531,6 +539,10 @@ def enroll_by_qr_token(request, qr_token):
         'session_type': session.session_type,
         'site_location': session.site_location.name if session.site_location else (session.location or 'Online'),
         'trainer_id': session.trainer.employee_id if session.trainer else None,
+        'enrolled_count': enrolled_count,
+        'max_trainees': session.max_trainees,
+        'seats_remaining': seats_remaining,
+        'is_full': seats_remaining <= 0,
     }, status=201)
 
 
@@ -1018,7 +1030,16 @@ def enroll_session(request, user_id, session_id):
     except (User.DoesNotExist, Session.DoesNotExist):
         return Response({'error': 'Not found'}, status=404)
     if session.trainees.filter(id=user.id).exists():
-        return Response({'message': 'Already enrolled', 'already_enrolled': True}, status=200)
+        enrolled_count = session.trainees.count()
+        seats_remaining = session.max_trainees - enrolled_count
+        return Response({
+            'message': 'Already enrolled',
+            'already_enrolled': True,
+            'enrolled_count': enrolled_count,
+            'max_trainees': session.max_trainees,
+            'seats_remaining': seats_remaining,
+            'is_full': seats_remaining <= 0,
+        }, status=200)
     if session.trainees.count() >= session.max_trainees:
         return Response({'error': 'Session is full'}, status=400)
     # Enroll across all 3 tables
@@ -1031,7 +1052,16 @@ def enroll_session(request, user_id, session_id):
         session=session, trainee=user,
         defaults={'progress': 'NOT_STARTED'}
     )
-    return Response({'message': 'Successfully enrolled!', 'session_id': session.id}, status=200)
+    enrolled_count = session.trainees.count()
+    seats_remaining = session.max_trainees - enrolled_count
+    return Response({
+        'message': 'Successfully enrolled!',
+        'session_id': session.id,
+        'enrolled_count': enrolled_count,
+        'max_trainees': session.max_trainees,
+        'seats_remaining': seats_remaining,
+        'is_full': seats_remaining <= 0,
+    }, status=200)
 
 
 @api_view(['DELETE'])

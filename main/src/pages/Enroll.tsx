@@ -52,21 +52,36 @@ const Enroll: React.FC = () => {
   const [loginError, setLoginError] = useState("");
   const [loggingIn, setLoggingIn] = useState(false);
 
-  // ── Fetch session preview (no auth required) ──────────────
-  useEffect(() => {
+  const fetchSession = (showLoading = false) => {
     if (!qr_token) return;
+    if (showLoading) setLoading(true);
     apiFetch(`/api/enroll/${qr_token}/`)
       .then(r => r.json())
       .then(data => {
         if (data.error) setError(data.error);
         else setSession(data);
-        setLoading(false);
       })
       .catch(() => {
         setError("Failed to load session info. The QR code may be invalid.");
-        setLoading(false);
+      })
+      .finally(() => {
+        if (showLoading) setLoading(false);
       });
+  };
+
+  // ── Fetch session preview (no auth required) ──────────────
+  useEffect(() => {
+    fetchSession(true);
   }, [qr_token]);
+
+  // ── Poll for seat updates ────────────────────────────────
+  useEffect(() => {
+    if (!qr_token || enrolled || error) return;
+    const intervalId = setInterval(() => {
+      fetchSession(false);
+    }, 15000);
+    return () => clearInterval(intervalId);
+  }, [qr_token, enrolled, error]);
 
   // ── Inline login ──────────────────────────────────────────
   const handleLogin = async (e: React.FormEvent) => {
@@ -91,6 +106,16 @@ const Enroll: React.FC = () => {
       const data: any = await apiPost(`/api/enroll/${qr_token}/confirm/`, {
         enrolled_via: "QR",
       });
+      if (data?.enrolled_count !== undefined) {
+        setSession(prev => prev ? {
+          ...prev,
+          enrolled_count: data.enrolled_count,
+          max_trainees: data.max_trainees ?? prev.max_trainees,
+          seats_remaining: data.seats_remaining ?? prev.seats_remaining,
+          is_full: data.is_full ?? prev.is_full,
+          already_enrolled: data.already_enrolled ?? prev.already_enrolled,
+        } : prev);
+      }
       if (data.already_enrolled) {
         // Already enrolled — still a success, navigate to upcoming
         setEnrolled(true);
