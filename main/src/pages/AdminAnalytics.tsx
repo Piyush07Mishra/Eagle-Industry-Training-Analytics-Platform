@@ -170,15 +170,17 @@ const AdminAnalytics: React.FC = () => {
                   width={width}
                   height={280}
                   data={data.trainee_progress}
-                  margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
+                  margin={{ top: 5, right: 20, left: 0, bottom: 50 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
                     tick={{ fontSize: 12 }}
-                    angle={-30}
+                    angle={-40}
                     textAnchor="end"
                     interval={0}
+                    height={60}
+                    tickMargin={8}
                   />
                   <YAxis domain={[0, 100]} />
                   <Tooltip />
@@ -200,15 +202,17 @@ const AdminAnalytics: React.FC = () => {
                   width={width}
                   height={280}
                   data={data.monthly_trend}
-                  margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
+                  margin={{ top: 5, right: 20, left: 0, bottom: 50 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
                     tick={{ fontSize: 12 }}
-                    angle={-30}
+                    angle={-40}
                     textAnchor="end"
                     interval={0}
+                    height={60}
+                    tickMargin={8}
                   />
                   <YAxis domain={[0, 100]} />
                   <Tooltip />
@@ -253,15 +257,17 @@ const AdminAnalytics: React.FC = () => {
                   width={width}
                   height={280}
                   data={data.gap_analysis}
-                  margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
+                  margin={{ top: 5, right: 20, left: 0, bottom: 50 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
                     tick={{ fontSize: 12 }}
-                    angle={-30}
+                    angle={-40}
                     textAnchor="end"
                     interval={0}
+                    height={60}
+                    tickMargin={8}
                   />
                   <YAxis />
                   <Tooltip />
@@ -337,15 +343,17 @@ const AdminAnalytics: React.FC = () => {
                   width={width}
                   height={280}
                   data={data.monthly_trend}
-                  margin={{ top: 5, right: 20, left: 0, bottom: 20 }}
+                  margin={{ top: 5, right: 20, left: 0, bottom: 50 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
                     dataKey="name"
                     tick={{ fontSize: 12 }}
-                    angle={-30}
+                    angle={-40}
                     textAnchor="end"
                     interval={0}
+                    height={60}
+                    tickMargin={8}
                   />
                   <YAxis />
                   <Tooltip />
